@@ -1,6 +1,6 @@
 ---
 name: video-to-summary
-description: Convert video URLs to text summaries with speech-to-text transcription. Supports Bilibili (B站), YouTube, TikTok, XiaoHongShu (小红书), Twitter, and other platforms. Use when users provide video URLs and want to: (1) Extract and transcribe audio content, (2) Generate text summaries from videos, (3) Download and process video content for analysis. Triggers on phrases like "视频转文字", "视频总结", "transcribe video", "summarize video", "提取视频内容".
+description: "Convert video URLs to text summaries with speech-to-text transcription. Supports Bilibili (B站), YouTube, TikTok, XiaoHongShu (小红书), Twitter, and other platforms. Use when users provide video URLs and want to: (1) Extract and transcribe audio content, (2) Generate text summaries from videos, (3) Download and process video content for analysis. Triggers on phrases like '视频转文字', '视频总结', 'transcribe video', 'summarize video', '提取视频内容'."
 ---
 
 # Video to Summary V2
@@ -17,20 +17,20 @@ bash install.sh
 
 # Or manually install dependencies
 pipx install openai-whisper  # Whisper (manages its own venv)
-pip3 install --break-system-packages yt-dlp requests beautifulsoup4 pyyaml  # System packages
+pip install --break-system-packages yt-dlp requests beautifulsoup4 pyyaml  # System packages
 ```
 
 ### Process a Video
 
 ```bash
 # Basic usage
-python3 scripts/video_to_summary.py --url "https://www.youtube.com/watch?v=xxx"
+python scripts/video_to_summary.py "https://www.youtube.com/watch?v=xxx"
 
 # With specific output directory
-python3 scripts/video_to_summary.py --url "URL" --output-dir ./output
+python scripts/video_to_summary.py "URL" --output-dir ./output
 
 # Audio only mode (faster)
-python3 scripts/video_to_summary.py --url "URL" --audio-only
+python scripts/video_to_summary.py "URL" --audio-only
 ```
 
 ## Supported Platforms
@@ -107,29 +107,29 @@ output:
 
 ```bash
 # Process YouTube video
-python3 scripts/video_to_summary.py --url "https://youtube.com/watch?v=xxx"
+python3 scripts/video_to_summary.py "https://youtube.com/watch?v=xxx"
 
 # Process Bilibili video
-python3 scripts/video_to_summary.py --url "https://b23.tv/xxx"
+python3 scripts/video_to_summary.py "https://b23.tv/xxx"
 
 # Process XiaoHongShu video
-python3 scripts/video_to_summary.py --url "https://www.xiaohongshu.com/..."
+python3 scripts/video_to_summary.py "https://www.xiaohongshu.com/..."
 ```
 
 ### Advanced Options
 
 ```bash
 # Specify Whisper model for better accuracy
-python3 scripts/video_to_summary.py --url "URL" --model medium
+python scripts/video_to_summary.py "URL" --model medium
 
 # Audio only mode (faster, smaller)
-python3 scripts/video_to_summary.py --url "URL" --audio-only
+python scripts/video_to_summary.py "URL" --audio-only
 
 # Custom output directory
-python3 scripts/video_to_summary.py --url "URL" --output-dir ~/videos/analysis
+python scripts/video_to_summary.py "URL" --output-dir ~/videos/analysis
 
 # Disable auto cleanup to keep intermediate files
-python3 scripts/video_to_summary.py --url "URL" --keep-temp
+python scripts/video_to_summary.py "URL" --keep-temp
 ```
 
 ## Output Structure
@@ -228,10 +228,10 @@ pipx install openai-whisper
 ### Poor transcription quality
 ```bash
 # Use larger model
-python3 scripts/video_to_summary.py --url "URL" --model medium
+python scripts/video_to_summary.py "URL" --model medium
 
 # Or
-python3 scripts/video_to_summary.py --url "URL" --model large
+python scripts/video_to_summary.py "URL" --model large
 ```
 
 ## Performance Tips
