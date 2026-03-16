@@ -1,0 +1,18 @@
+=== 标准输出 ===
+
+============================================================
+📊 URL分析完成（仅分析模式）
+============================================================
+建议使用命令: python scripts/video_to_summary.py --url "https://b23.tv/hHipbJS" --use-api
+
+
+=== 标准错误 ===
+2026-03-13 20:29:52,364 - __main__ - INFO - 任务ID: 20260313_202952
+2026-03-13 20:29:52,364 - __main__ - INFO - 工作目录: output/20260313_202952
+2026-03-13 20:29:52,364 - __main__ - INFO - API支持: 启用
+2026-03-13 20:29:52,364 - __main__ - INFO - 分析URL: https://b23.tv/hHipbJS
+2026-03-13 20:29:52,364 - utils.platform_detector - INFO - 检测到平台: bilibili (Bilibili (B站))
+2026-03-13 20:29:52,365 - utils.platform_detector - INFO - 检测到平台: bilibili (Bilibili (B站))
+2026-03-13 20:29:52,365 - utils.platform_detector - INFO - 检测到平台: bilibili (Bilibili (B站))
+2026-03-13 20:29:52,976 - __main__ - INFO - 检测到平台: Bilibili (B站)
+2026-03-13 20:29:53,266 - utils.bilibili_api - INFO - 获取视频信息: BV12CA1zhEmK

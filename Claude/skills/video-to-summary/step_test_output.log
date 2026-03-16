@@ -1,0 +1,111 @@
+yt-dlp下载失败: ERROR: [generic] Unable to download webpage: HTTP Error 412: Precondition Failed (caused by <HTTPErr
+yt-dlp下载失败: ERROR: [generic] Unable to download webpage: HTTP Error 412: Precondition Failed (caused by <HTTPErr
+🚀 B站API方案 - 分步测试
+======================================================================
+测试URL: https://b23.tv/hHipbJS
+测试目录: step_test_20260313_202945
+======================================================================
+
+======================================================================
+🎯 开始测试: 平台检测
+======================================================================
+🔍 步骤1: 平台检测
+--------------------------------------------------
+检测到平台: bilibili
+平台名称: Bilibili (B站)
+平台ID: bilibili
+API支持: ✅ 可用
+API名称: Bilibili API
+推荐使用API: ✅ 是
+
+✅ platform_detection: success
+
+======================================================================
+🎯 开始测试: B站API提取
+======================================================================
+
+🎯 步骤2: B站API提取
+--------------------------------------------------
+✅ 提取BVID: BV12CA1zhEmK
+✅ 获取视频信息成功
+   标题: 4500 点为什么会比较曲折？
+   时长: 131秒
+   UP主: 刘纪鹏
+   播放量: 7,187
+   发布时间: 1772149041
+   视频信息已保存: step_test_20260313_202945/video_info.json
+
+✅ bilibili_api_extraction: success
+
+======================================================================
+🎯 开始测试: 下载地址提取
+======================================================================
+
+📥 步骤3: 下载地址提取
+--------------------------------------------------
+获取720p质量下载地址...
+✅ 下载地址获取成功
+   方法: api_direct
+   标题: 4500 点为什么会比较曲折？
+   BVID: BV12CA1zhEmK
+   获取到 7 个下载地址
+     • dash_video: 4个
+     • dash_audio: 3个
+   下载地址已保存: step_test_20260313_202945/download_urls.json
+
+✅ download_url_extraction: success
+
+======================================================================
+🎯 开始测试: 视频下载器测试
+======================================================================
+
+⬇️  步骤4: 视频下载器集成测试
+--------------------------------------------------
+测试下载流程（API方案）...
+下载结果:
+   成功: True
+   方法: bilibili_api
+   错误: 无
+✅ 下载流程测试成功
+   状态: 已获取下载地址，建议使用专用工具下载
+   获取到 7 个下载地址
+   测试结果已保存: step_test_20260313_202945/download_test_result.json
+
+✅ video_downloader_test: success
+
+======================================================================
+🎯 开始测试: 主脚本测试
+======================================================================
+
+🔄 步骤5: 主脚本功能测试
+--------------------------------------------------
+执行命令: /root/.openclaw/workspace/video-to-summary-skill/venv/bin/python scripts/video_to_summary.py --url https://b23.tv/hHipbJS --use-api --analyze-only
+✅ 主脚本分析模式测试成功
+   输出包含平台检测和API信息
+
+✅ main_script_test: success
+
+======================================================================
+🎯 开始测试: 生成总结
+======================================================================
+
+📊 步骤6: 生成测试总结
+--------------------------------------------------
+测试步骤总数: 5
+成功步骤数: 5
+成功率: 100.0%
+✅ 测试总结已生成
+   完整结果: step_test_20260313_202945/full_test_results.json
+   测试报告: step_test_20260313_202945/测试报告.md
+
+✅ generate_summary: success
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/video-to-summary-skill/step_by_step_test.py", line 500, in <module>
+    exit_code = main()
+                ^^^^^^
+  File "/root/.openclaw/workspace/video-to-summary-skill/step_by_step_test.py", line 453, in main
+    tester.run_all_tests()
+  File "/root/.openclaw/workspace/video-to-summary-skill/step_by_step_test.py", line 442, in run_all_tests
+    self.display_final_results()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'StepByStepTester' object has no attribute 'display_final_results'

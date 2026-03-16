@@ -1,0 +1,10 @@
+{
+  "video_title": "4500 点为什么会比较曲折？",
+  "audio_url": "https://yhqs71i.edge.mountaintoys.cn:4483/upgcxcode/55/70/36314547055/36314547055-1-30280.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&mid=0&trid=0000fb0ec581925d4b10966355648cbfe02u&oi=1921274825&gen=playurlv3&os=mcdn&og=cos&nbs=1&uipk=5&platform=pc&deadline=1773412231&upsig=f4db33a8837894295438c4d881f67ddf&uparams=e,mid,trid,oi,gen,os,og,nbs,uipk,platform,deadline&mcdnid=50052566&bvc=vod&nettype=0&bw=196916&buvid=&build=0&dl=0&f=u_0_0&qn_dyeid=564e54519d9f82440060a36b69b40367&agrr=0&orderid=0,3",
+  "audio_format": "dash_audio",
+  "codecs": "mp4a.40.2",
+  "bandwidth": 195643,
+  "transcript_path": "/root/.openclaw/workspace/video-to-summary-skill/output/20260313_203028/transcription/bilibili_audio_transcript.txt",
+  "transcript_length": 85,
+  "transcript_preview": "这是音频转录的示例文本。\n由于需要语音识别服务（如百度AI、腾讯AI、讯飞等），\n或者需要安装Whisper等开源模型，此处提供示例。\n实际使用请配置相应的语音识别服务。"
+}

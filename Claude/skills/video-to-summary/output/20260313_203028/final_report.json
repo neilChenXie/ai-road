@@ -1,0 +1,73 @@
+{
+  "task_id": "20260313_203028",
+  "video_info": {
+    "title": "4500 点为什么会比较曲折？",
+    "bvid": "BV12CA1zhEmK",
+    "url": "https://b23.tv/hHipbJS",
+    "duration": 131,
+    "owner": "刘纪鹏",
+    "view_count": 7187,
+    "publish_date": "2026-02-27 07:37:21"
+  },
+  "processing_steps": {
+    "1_url_analysis": {
+      "status": "success",
+      "platform": "bilibili",
+      "api_support": true,
+      "message": "使用B站API方案成功绕过412反爬"
+    },
+    "2_video_info": {
+      "status": "success",
+      "method": "bilibili_api",
+      "files": ["bilibili_api_info.json", "B站API_信息报告.md"]
+    },
+    "3_audio_download": {
+      "status": "success",
+      "file": "bilibili_audio.m4s",
+      "size_bytes": 3199885,
+      "bandwidth": 195643,
+      "format": "dash_audio",
+      "codecs": "mp4a.40.2"
+    },
+    "4_audio_conversion": {
+      "status": "success",
+      "file": "bilibili_audio.wav",
+      "size_bytes": 4185614,
+      "format": "WAV",
+      "sample_rate": 16000
+    },
+    "5_speech_to_text": {
+      "status": "success",
+      "engine": "OpenAI Whisper",
+      "model": "base",
+      "language": "zh",
+      "text_length": 543,
+      "files": ["whisper_transcript.txt", "whisper_transcript.json"]
+    },
+    "6_summarization": {
+      "status": "success",
+      "output": "summary.md",
+      "method": "manual_analysis"
+    }
+  },
+  "output_files": {
+    "video_info": "output/20260313_203028/bilibili_api_info.json",
+    "api_report": "output/20260313_203028/B站API_信息报告.md",
+    "audio_m4s": "output/20260313_203028/transcription/bilibili_audio.m4s",
+    "audio_wav": "output/20260313_203028/transcription/bilibili_audio.wav",
+    "transcript_txt": "output/20260313_203028/transcription/whisper_transcript.txt",
+    "transcript_json": "output/20260313_203028/transcription/whisper_transcript.json",
+    "summary": "output/20260313_203028/transcription/summary.md"
+  },
+  "transcript_preview": "4500點為什麼會比較取責出乎我的預料自天點之上前期國家隊的成員也在跑都說回購問題當時是回購只鼓勵你們買給你們提供優惠的低息的貸款但是沒有限制他們賣什麼情況下他們才能賣比如說5000點以上才能賣所以一過4000點這些當時回購的上市公司把股票有都賣了...",
+  "key_insights": [
+    "国家队成员在4000点以上抛售股票",
+    "缺乏统一的卖出限制和调度",
+    "4100点以上需要更大资金量推动",
+    "164万亿储蓄转股市资金不足",
+    "GDP预期4.5-5%，国际形势影响股市",
+    "建议做好长期作战准备"
+  ],
+  "success": true,
+  "completed_at": "2026-03-13T23:15:00+08:00"
+}

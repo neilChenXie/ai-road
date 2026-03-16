@@ -1,0 +1,18 @@
+# Mac_OS
+.DS_Store
+.Spotlight-V100
+.Trashes
+._*
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Vim
+.*.sw[po]
+
+# VS Code
+.vscode/
+*.code-workspace
+
+tmp/
