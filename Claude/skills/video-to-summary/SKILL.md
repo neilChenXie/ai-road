@@ -1,85 +1,104 @@
 ---
 name: video-to-summary
-description: Convert video URLs to text summaries with speech-to-text transcription. Supports Bilibili (B站), YouTube, TikTok, Twitter, and other platforms. Use when users provide video URLs and want to: (1) Extract and transcribe audio content, (2) Generate text summaries from videos, (3) Download and process video content for analysis. Triggers on phrases like "视频转文字", "视频总结", "transcribe video", "summarize video", "提取视频内容".
+description: Convert video URLs to text summaries with speech-to-text transcription. Supports Bilibili (B站), YouTube, TikTok, XiaoHongShu (小红书), Twitter, and other platforms. Use when users provide video URLs and want to: (1) Extract and transcribe audio content, (2) Generate text summaries from videos, (3) Download and process video content for analysis. Triggers on phrases like "视频转文字", "视频总结", "transcribe video", "summarize video", "提取视频内容".
 ---
 
-# Video to Summary
+# Video to Summary V2
 
-Convert video URLs into structured text summaries with automatic speech recognition.
+An optimized video-to-text tool with automatic speech recognition and intelligent summarization.
 
 ## Quick Start
 
-Process a video URL:
+### One-time Setup
 
 ```bash
-python scripts/video_to_summary.py --url "https://b23.tv/xxx" --output-dir ./output
+# Run the installation script (recommended)
+bash install.sh
+
+# Or manually install dependencies
+pipx install openai-whisper  # Whisper (manages its own venv)
+pip3 install --break-system-packages yt-dlp requests beautifulsoup4 pyyaml  # System packages
 ```
 
-For Bilibili videos with API support (recommended):
+### Process a Video
 
 ```bash
-python scripts/video_to_summary.py --url "https://b23.tv/xxx" --use-api --output-dir ./output
+# Basic usage
+python3 scripts/video_to_summary.py --url "https://www.youtube.com/watch?v=xxx"
+
+# With specific output directory
+python3 scripts/video_to_summary.py --url "URL" --output-dir ./output
+
+# Audio only mode (faster)
+python3 scripts/video_to_summary.py --url "URL" --audio-only
 ```
 
 ## Supported Platforms
 
-- **Bilibili (B站)** - Full API support with 412 error bypass
-- **YouTube** - Via yt-dlp (requires cookies for restricted content)
-- **TikTok** - Via yt-dlp
-- **Twitter/X** - Via yt-dlp
-- **Other platforms** - Any platform supported by yt-dlp
+| Platform | Support Level | Notes |
+|----------|--------------|-------|
+| **Bilibili (B站)** | Excellent | Official API support |
+| **YouTube** | Good | May require cookies |
+| **XiaoHongShu (小红书)** | Good | Auto-detects cookies |
+| **TikTok** | Good | Standard support |
+| **Twitter/X** | Good | Standard support |
+| **Other** | Variable | Any platform supported by yt-dlp |
 
-## Core Workflow
+## Key Improvements (V2)
 
-1. **URL Analysis** - Detect platform and check API support
-2. **Video Download** - Download video/audio with platform-specific handling
-3. **Audio Extraction** - Extract audio track for transcription
-4. **Speech-to-Text** - Transcribe audio using OpenAI Whisper
-5. **Summarization** - Generate structured summary from transcript
-
-## Key Features
-
-### Bilibili API Integration
-
-Bilibili videos use official API to bypass 412 anti-crawling errors:
-
-- Automatic BVID extraction from short links (b23.tv)
-- Video info retrieval without web scraping
-- Direct download URL generation
-- Subtitle support
-
-See [references/bilibili-api.md](references/bilibili-api.md) for API details.
-
-### Speech Recognition
-
-Uses OpenAI Whisper for accurate transcription:
-
-- Multiple model sizes (tiny, base, small, medium, large)
-- Automatic language detection
-- Chinese (zh) language optimization
-- Timestamp support
-
-See [references/whisper-config.md](references/whisper-config.md) for configuration.
+- 🚀 **Auto dependency management** - One-command setup
+- 🎯 **Better platform support** - Smart cookie detection
+- 📝 **Auto summarization** - No manual work needed
+- 🔧 **Better error handling** - Clear messages and fixes
+- 📊 **Structured output** - JSON + Markdown formats
+- ⚙️ **Configurable** - YAML-based settings
 
 ## Installation
 
 ### Prerequisites
 
 ```bash
-# System dependencies
-apt-get install ffmpeg
-
-# Python dependencies
-pip install -r scripts/requirements.txt
+# Install FFmpeg (system dependency)
+brew install ffmpeg          # macOS
+# or
+sudo apt-get install ffmpeg  # Ubuntu/Debian
 ```
 
-### Whisper Setup
+### One-line Install
 
 ```bash
-# Install Whisper (recommended in virtual environment)
-python -m venv venv
-source venv/bin/activate
-pip install openai-whisper
+bash install.sh
+```
+
+This will:
+1. Check Python version (requires 3.8+)
+2. Install Whisper using pipx (auto-managed venv)
+3. Install system dependencies
+4. Create necessary directories
+
+## Configuration
+
+Edit `config.yaml` to customize behavior:
+
+```yaml
+# Whisper settings
+whisper:
+  model: base           # tiny/base/small/medium/large
+  language: zh          # auto/detect
+  temperature: 0.0
+
+# Download settings
+download:
+  use_cookies: true
+  cookies_browser: chrome
+  audio_only: false
+  timeout: 300
+
+# Output settings
+output:
+  format: [txt, json, md]
+  include_summary: true
+  cleanup_temp: true
 ```
 
 ## Usage Examples
@@ -87,102 +106,168 @@ pip install openai-whisper
 ### Basic Usage
 
 ```bash
-# Process Bilibili video
-python scripts/video_to_summary.py --url "https://b23.tv/hHipbJS" --use-api
-
 # Process YouTube video
-python scripts/video_to_summary.py --url "https://youtube.com/watch?v=xxx"
+python3 scripts/video_to_summary.py --url "https://youtube.com/watch?v=xxx"
 
-# Specify output directory
-python scripts/video_to_summary.py --url "VIDEO_URL" --output-dir ./my-output
+# Process Bilibili video
+python3 scripts/video_to_summary.py --url "https://b23.tv/xxx"
+
+# Process XiaoHongShu video
+python3 scripts/video_to_summary.py --url "https://www.xiaohongshu.com/..."
 ```
 
 ### Advanced Options
 
 ```bash
-# Audio-only mode (faster, smaller files)
-python scripts/video_to_summary.py --url "VIDEO_URL" --audio-only
+# Specify Whisper model for better accuracy
+python3 scripts/video_to_summary.py --url "URL" --model medium
 
-# Specify language for transcription
-python scripts/video_to_summary.py --url "VIDEO_URL" --lang zh
+# Audio only mode (faster, smaller)
+python3 scripts/video_to_summary.py --url "URL" --audio-only
 
-# Use specific Whisper model
-python scripts/video_to_summary.py --url "VIDEO_URL" --model base
-```
+# Custom output directory
+python3 scripts/video_to_summary.py --url "URL" --output-dir ~/videos/analysis
 
-### Batch Processing
-
-```bash
-# Process multiple videos
-bash scripts/batch_process.sh urls.txt
+# Disable auto cleanup to keep intermediate files
+python3 scripts/video_to_summary.py --url "URL" --keep-temp
 ```
 
 ## Output Structure
 
 ```
 output/
-└── YYYYMMDD_HHMMSS/
-    ├── bilibili_api_info.json      # Video metadata
-    ├── transcription/
-    │   ├── audio.wav               # Extracted audio
-    │   ├── whisper_transcript.txt  # Transcription text
-    │   ├── whisper_transcript.json # Detailed transcription data
-    │   └── summary.md              # Generated summary
-    └── final_report.json           # Processing report
+├── video_id/
+│   ├── info.json              # Video metadata
+│   ├── transcript.json         # Full transcript with timestamps
+│   ├── transcript.txt         # Plain text transcript
+│   ├── summary.md             # AI-generated summary
+│   └── audio.mp3              # Extracted audio (if not audio-only)
 ```
 
-## Configuration
+## Output Format
 
-### Environment Variables
+### Transcript (JSON)
 
-- `WHISPER_MODEL` - Default Whisper model (default: base)
-- `OUTPUT_DIR` - Default output directory (default: ./output)
-- `BILIBILI_COOKIES` - Path to Bilibili cookies file (optional)
+```json
+{
+  "video_id": "xxx",
+  "platform": "youtube",
+  "title": "Video Title",
+  "duration": 292.22,
+  "transcript": [
+    {
+      "start": 0.0,
+      "end": 3.2,
+      "text": "这是第一句话"
+    }
+  ]
+}
+```
 
-### Platform-Specific Notes
+### Summary (Markdown)
 
-**Bilibili:**
-- API method recommended for reliability
+```markdown
+# 视频标题
+
+## 概述
+视频的简要概述...
+
+## 关键点
+- 要点1
+- 要点2
+
+## 详细内容
+详细总结...
+```
+
+## Platform-Specific Notes
+
+### XiaoHongShu (小红书)
+- Auto-detects and uses Chrome cookies if available
+- Falls back to standard download if cookies fail
+- May require user interaction for some private videos
+
+### YouTube
+- Age-restricted content requires cookies
+- Use `--cookies-from-browser` flag or configure in `config.yaml`
+
+### Bilibili
+- Uses official API to bypass 412 errors
+- Supports short links (b23.tv)
 - No cookies required for public videos
-- Rate limiting may apply for high-frequency requests
-
-**YouTube:**
-- Requires cookies for age-restricted content
-- Use `--cookies` flag with cookies file path
 
 ## Troubleshooting
 
-### Common Issues
+### "python3: command not found"
+```bash
+# Install Python 3
+brew install python3  # macOS
+sudo apt install python3  # Ubuntu
+```
 
-**412 Error (Bilibili):**
-- Use `--use-api` flag
-- API method bypasses anti-crawling
+### "ModuleNotFoundError: No module named 'xxx'"
+```bash
+# Re-run install script
+bash install.sh
+```
 
-**Whisper Not Found:**
-- Install: `pip install openai-whisper`
-- Use virtual environment recommended
+### "Whisper not found"
+```bash
+# Whisper is managed by pipx
+pipx ensurepath
+pipx install openai-whisper
+```
 
-**FFmpeg Missing:**
-- Install: `apt-get install ffmpeg` (Ubuntu/Debian)
-- Install: `brew install ffmpeg` (macOS)
+### "Video download failed"
+- Check URL is valid
+- For restricted content, ensure cookies are configured
+- Try with `--use-cookies` flag
 
-**Slow Transcription:**
-- Use smaller model: `--model tiny` or `--model base`
-- Ensure audio-only mode: `--audio-only`
+### Poor transcription quality
+```bash
+# Use larger model
+python3 scripts/video_to_summary.py --url "URL" --model medium
 
-## Script Reference
+# Or
+python3 scripts/video_to_summary.py --url "URL" --model large
+```
 
-- `scripts/video_to_summary.py` - Main processing script
-- `scripts/batch_process.sh` - Batch processing wrapper
-- `scripts/utils/` - Utility modules
-  - `bilibili_api.py` - Bilibili API client
-  - `video_downloader.py` - Multi-platform downloader
-  - `audio_extractor.py` - Audio extraction utilities
-  - `speech_to_text.py` - Whisper integration
-  - `text_summarizer.py` - Summary generation
+## Performance Tips
 
-## References
+| Scenario | Whisper Model | Speed | Quality |
+|----------|--------------|-------|---------|
+| Quick test | tiny | Very Fast | Fair |
+| General use | base | Fast | Good |
+| High quality | medium | Medium | Very Good |
+| Best quality | large | Slow | Excellent |
 
-- [Bilibili API Documentation](references/bilibili-api.md)
-- [Whisper Configuration](references/whisper-config.md)
-- [Platform Support Matrix](references/platforms.md)
+## Development
+
+### Project Structure
+
+```
+video-to-summary-v2/
+├── SKILL.md                 # This file
+├── config.yaml              # Configuration
+├── requirements.txt         # Python dependencies
+├── install.sh              # Installation script
+└── scripts/
+    ├── video_to_summary.py # Main script
+    └── utils/
+        ├── __init__.py
+        ├── platform_detector.py  # Platform detection
+        ├── video_downloader.py   # Video download
+        ├── audio_extractor.py    # Audio extraction
+        ├── speech_to_text.py     # Speech recognition
+        ├── text_summarizer.py    # Text summarization
+        ├── dependency_checker.py # Dependency checking
+        └── logger.py            # Logging utilities
+```
+
+## License
+
+MIT License
+
+## Contributing
+
+Contributions welcome! Please open an issue or submit a PR.
