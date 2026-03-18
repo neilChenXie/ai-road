@@ -16,3 +16,9 @@ desktop.ini
 *.code-workspace
 
 .tmp/
+
+#Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd

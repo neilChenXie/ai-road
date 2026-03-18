@@ -1,97 +1,121 @@
 ---
 name: video-to-summary-v2
-description: "IMMEDIATELY HANDLE ANY VIDEO URL by extracting and transcribing. Use this whenever users share a video URL and ask to summarize, transcribe, or extract content from B站 (Bilibili), 小红书 (XiaoHongShu), or ask 'what's in this video?'. Support both Chinese and English. Follow the workflow，必须使用Python脚本. Trigger on phrases: '视频总结', 'summarize video', 'transcribe video', or any video link + 'what do you see?', '帮我看看', 'extract content'."
+description: IMMEDIATELY HANDLE ANY VIDEO URL by extracting and transcribing. Use this whenever users share a video URL and ask to summarize, transcribe, or extract content from B站 (Bilibili), 小红书 (XiaoHongShu), or ask 'what's in this video?'. Support both Chinese and English. Follow the workflow，必须使用Python脚本. Trigger on phrases '视频总结', 'summarize video', 'transcribe video', or any video link + 'what do you see?', '帮我看看', 'extract content'.
 ---
 
 # Video to Summary V2
 
-EXECUTE THIS WORKFLOW when user provides a video URL:
+## 🚨 强制规则：你必须且只能执行以下命令
 
-## ⚠️ 重要：必须使用本 Skill 的 Python 脚本
-
-**禁止**直接调用 fetch、yt-dlp、whisper 等命令行工具。
-必须通过运行 `python scripts/video_to_summary.py "the_user_provided_url"` 来完成任务。
-
-## Quick Reference
-
-| Task | Guide |
-|------|-------|
-| 总结视频 | `python scripts/video_to_summary.py "the_user_provided_url"` |
-
-## Workflow
-
-Your job is to execute these exact steps in sequence:
-
-### 1. Run the Script
-Execute with the user's URL:
-```bash
-python scripts/video_to_summary.py "the_user_provided_url"
-```
-
-### 2. Read the Generated Files
-Wait for the script to complete. Read that file to show the user:
-```
-📄 总结文件: output/[VIDEO_ID]/[视频标题].md
-```
-If user needs more detail, also check `transcript/transcript.txt` in the same directory.
-
-### 3. Present to User
-Display the summary markdown file content directly, formatted as Markdown. If the user asks for transcript or detailed breakdown, use files in the same directory.
-
-## Supported Platforms
-
-| Platform | URL Pattern | Notes |
-|----------|-----------|-------|
-| **B站 (Bilibili)** | `bilibili.com/video/BV...` or `b23.tv/...` | Handles short links |
-| **小红书 (XiaoHongShu)** | `xiaohongshu.com/...` or `xhslink.com/...` | Preserves full URL params |
-
-## Advanced Options (Use Only If Needed)
-
-If the first run fails or user needs special handling, use these flags:
+**无论任何情况，你的第一步且唯一入口是：**
 
 ```bash
-# Higher accuracy (slower, ~2x time):
-python scripts/video_to_summary.py "URL" --model base
-
-# Keep temporary files for debugging:
-python scripts/video_to_summary.py "URL" --keep-temp
-
-# Custom output location:
-python scripts/video_to_summary.py "URL" --output-dir /path/to/output
-
-# Just check if dependencies are installed:
-python scripts/video_to_summary.py --check-deps
+cd ~/.claude/skills/video-to-summary-v2 && python scripts/video_to_summary.py "用户提供的URL"
 ```
 
-## Output File Structure
+**严禁以下行为（即使你认为更简单或更高效）：**
+- ❌ 禁止直接调用 `yt-dlp`、`whisper`、`ffmpeg` 等命令行工具
+- ❌ 禁止用 `curl`、`fetch`、`requests` 自行下载视频
+- ❌ 禁止跳过脚本、自己编写替代逻辑
+- ❌ 禁止因脚本报错就改用其他方式
 
-After running, files are generated in `output/[VIDEO_ID]/` (relative to this skill directory):
+如果脚本报错，**只能按照本文档的「常见问题」部分排查，或告知用户错误信息**，不得绕过脚本自行处理。
 
-- **[视频标题].md** ← **Show this to the user** (formatted Markdown with title, overview, key points, detailed breakdown)
-- **[视频标题]_summary.json** — Structured data version if user needs parsing
-- **transcript.txt** — Full plain-text transcription (inside transcript/ folder)
-- **transcript.json** — Detailed transcript with timestamps (inside transcript/ folder)
+---
 
-Note: Output files are saved to `/Users/chen/.claude/skills/video-to-summary-v2/output/[VIDEO_ID]/`
+## 执行步骤（严格按顺序）
 
-## Common Issues & Fixes
+### Step 1：切换到 Skill 目录并运行脚本
 
-**The script won't run / Python not found**
-→ First, run: `python scripts/video_to_summary.py --check-deps`. Then use: `python scripts/video_to_summary.py "the_user_provided_url"` from the skill directory to install missing dependencies.
+```bash
+cd ~/.claude/skills/video-to-summary-v2 && python scripts/video_to_summary.py "用户提供的URL"
+```
 
-**Video download fails**
-- For   小红书: Ensure URL has full parameters (especially xsec_token) — use share link, not browser bar
-- For B站: Some videos may require login or cookies; the script tries automatically
+> ⚠️ 必须先 `cd` 到 skill 目录，脚本依赖相对路径。
 
-**Transcription is garbled or too short**
-→ The downloaded video may be corrupted. Retry with: `python scripts/video_to_summary.py "URL" --keep-temp` and check the downloaded file.
+### Step 2：等待脚本完成，读取输出文件
 
-**"Model not found" error**
-→ First Whisper model download takes time (~500MB). Let it complete. Or specify smaller: `--model tiny` or `--model small`.
+脚本完成后，读取以下文件并展示给用户：
 
-## Configuration
+```
+output/[VIDEO_ID]/[视频标题].md        ← 主要展示这个
+transcript/transcript.txt              ← 用户要求详细内容时使用
+```
 
-The skill reads `config.yaml` for:
-- `whisper.model` — Which Whisper size to use (base/small/medium/large)
-- `output.cleanup_temp` — Whether to delete video after processing
-- `download.timeout` — How long to wait for video download
+完整路径：`~/.claude/skills/video-to-summary-v2/output/[VIDEO_ID]/`
+
+### Step 3：以 Markdown 格式呈现内容
+
+直接将 `.md` 文件内容渲染给用户。如用户需要逐字稿，附上 `transcript.txt`。
+
+---
+
+## 支持平台
+
+| 平台 | URL 示例 |
+|------|---------|
+| **B站 (Bilibili)** | `bilibili.com/video/BV...` / `b23.tv/...` |
+| **小红书 (XiaoHongShu)** | `xiaohongshu.com/...` / `xhslink.com/...` |
+
+---
+
+## 高级选项（仅在默认运行失败时使用）
+
+```bash
+# 更高精度（速度慢约 2 倍）：
+cd ~/.claude/skills/video-to-summary-v2 && python scripts/video_to_summary.py "URL" --model base
+
+# 保留临时文件（用于调试）：
+cd ~/.claude/skills/video-to-summary-v2 && python scripts/video_to_summary.py "URL" --keep-temp
+
+# 自定义输出目录：
+cd ~/.claude/skills/video-to-summary-v2 && python scripts/video_to_summary.py "URL" --output-dir /path/to/output
+
+# 检查依赖是否已安装：
+cd ~/.claude/skills/video-to-summary-v2 && python scripts/video_to_summary.py --check-deps
+```
+
+---
+
+## 输出文件结构
+
+```
+~/.claude/skills/video-to-summary-v2/output/[VIDEO_ID]/
+├── [视频标题].md             ← 展示给用户（含标题、概述、要点、详细分段）
+├── [视频标题]_summary.json   ← 结构化数据（用户需要解析时使用）
+└── transcript/
+    ├── transcript.txt        ← 纯文本逐字稿
+    └── transcript.json       ← 带时间戳的详细转录
+```
+
+---
+
+## 常见问题排查
+
+> ⚠️ 遇到问题时，只能用以下方法排查，不得绕过脚本。
+
+**脚本无法运行 / Python 找不到**
+→ 先执行：`cd ~/.claude/skills/video-to-summary-v2 && python scripts/video_to_summary.py --check-deps`
+
+**视频下载失败**
+- 小红书：URL 必须包含完整参数（尤其是 `xsec_token`），使用分享链接而非浏览器地址栏复制的链接
+- B站：部分视频需要登录，脚本会自动尝试；如仍失败，告知用户
+
+**转录内容乱码或过短**
+→ 可能视频文件损坏，使用 `--keep-temp` 重试后检查下载文件：
+```bash
+cd ~/.claude/skills/video-to-summary-v2 && python scripts/video_to_summary.py "URL" --keep-temp
+```
+
+**"Model not found" 错误**
+→ Whisper 首次下载模型需要时间（约 500MB），等待完成即可。或改用小模型：`--model tiny` 或 `--model small`
+
+---
+
+## 配置文件说明（config.yaml）
+
+| 配置项 | 说明 |
+|--------|------|
+| `whisper.model` | Whisper 模型大小：tiny / small / base / medium / large |
+| `output.cleanup_temp` | 处理完成后是否删除临时视频文件 |
+| `download.timeout` | 视频下载超时时间（秒） |
