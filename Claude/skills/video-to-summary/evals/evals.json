@@ -1,0 +1,73 @@
+{
+  "skill_name": "video-to-summary",
+  "evals": [
+    {
+      "id": 1,
+      "name": "bilibili-basic",
+      "prompt": "帮我总结这个B站视频: https://www.bilibili.com/video/BV1GJ411x7h7",
+      "expected_output": "下载视频、提取音频、转录文字、生成包含概述和关键点的总结",
+      "assertions": [
+        {
+          "name": "detects_bilibili_platform",
+          "description": "正确识别为B站平台",
+          "type": "output_contains",
+          "expected": "bilibili"
+        },
+        {
+          "name": "generates_transcript",
+          "description": "生成转录文件",
+          "type": "file_exists",
+          "expected": "transcript"
+        },
+        {
+          "name": "generates_summary",
+          "description": "生成总结文件",
+          "type": "file_exists",
+          "expected": "summary"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "bilibili-short-link",
+      "prompt": "视频转文字：https://b23.tv/BV1xx411c7mD",
+      "expected_output": "识别B站短链接并处理",
+      "assertions": [
+        {
+          "name": "handles_short_link",
+          "description": "正确处理B站短链接",
+          "type": "output_contains",
+          "expected": "bilibili"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "xiaohongshu-summary",
+      "prompt": "提取这个小红书视频的内容: https://www.xiaohongshu.com/discovery/item/6782a00000000000010300000",
+      "expected_output": "使用优化的下载命令处理小红书视频，生成文字总结",
+      "assertions": [
+        {
+          "name": "detects_xiaohongshu_platform",
+          "description": "正确识别为小红书平台",
+          "type": "output_contains",
+          "expected": "xiaohongshu"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "xiaohongshu-xhslink",
+      "prompt": "帮我转写这个小红薯链接的视频：https://xhslink.com/abc123",
+      "expected_output": "识别小红书短链接并处理",
+      "assertions": [
+        {
+          "name": "handles_xhslink",
+          "description": "正确处理小红书短链接",
+          "type": "output_contains",
+          "expected": "xiaohongshu"
+        }
+      ]
+    }
+  ]
+}
