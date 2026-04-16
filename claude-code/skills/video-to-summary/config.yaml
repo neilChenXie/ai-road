@@ -1,0 +1,42 @@
+# Video to Summary Configuration
+
+# Whisper settings
+whisper:
+  model: base              # tiny/base/small/medium/large
+  language: zh             # auto/detect specific language
+  temperature: 0.0         # Lower = more deterministic
+  device: auto             # auto/cpu/cuda
+
+# Download settings
+download:
+  use_cookies: true        # Try to use browser cookies
+  cookies_browser: chrome  # chrome/firefox/safari/edge
+  audio_only: false        # Only download audio (faster)
+  timeout: 300            # Download timeout in seconds
+  user_agent: null        # Custom user agent (null = auto)
+
+# Output settings
+output:
+  format: [txt, json, md]  # Output formats
+  include_summary: true    # Auto-generate summary
+  cleanup_temp: true      # Delete temporary files
+  output_dir: ./output    # Default output directory
+
+# Logging
+logging:
+  level: INFO             # DEBUG/INFO/WARNING/ERROR
+  show_progress: true     # Show progress bars
+
+# Platform-specific settings
+platforms:
+  youtube:
+    prefer_cookies: true
+    max_quality: 1080
+
+  bilibili:
+    use_api: true        # Use official API
+    bypass_412: true     # Bypass anti-crawling
+
+  xiaohongshu:
+    use_custom_command: true   # Uses optimized download command
+    # Command: yt-dlp --referer "https://www.xiaohongshu.com" --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" "URL"

@@ -1,0 +1,12 @@
+{
+  "skill_name": "video-summary",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "basic-video-download-and-summary",
+      "prompt": "我有一个小红书视频链接：https://www.xiaohongshu.com/explore/65a1b2c3d4e5f6g7h8i9j0k1。请帮我下载这个视频，提取文字内容，然后总结一下主要内容。",
+      "expected_output": "脚本应该成功下载视频，提取音频，转录为文字，生成总结，并显示在命令行。最终输出应包括完整转录和核心要点总结。",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+# Video to Summary V2 - Configuration
+
+# Whisper settings
+whisper:
+  model: base      # tiny/base/small/medium/large
+  language: zh     # zh/en/auto
+
+# Download settings
+download:
+  timeout: 300
+  use_cookies: false
+  cookies_browser: chrome  # chrome/safari/firefox
+
+# Output settings
+output:
+  output_dir: ./output
+  cleanup_temp: true       # Remove video/audio after processing
+  summary_formats:
+    - md
+    - json
+
+# Logging
+logging:
+  level: INFO  # DEBUG/INFO/WARNING/ERROR
